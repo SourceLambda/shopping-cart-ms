@@ -35,28 +35,31 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
   private def httpRoutes: HttpRoutes[F] =
 
     HttpRoutes.of[F] {
-      // Get /cart/id
-      case GET -> Root / id =>
-        GenUUID[F].get[UserId](id).flatMap(userId =>
+      
+      // Retrieves the current user's cart
+      case GET -> Root / userId =>
+        GenUUID[F].get[UserId](userId).flatMap( userId =>
           Logger[F].info(s"The ID is: $userId") >>
           Ok(shoppingCart.get(userId))
         )
         
-      // Post /cart
-      case ar @ POST -> Root =>
-        ar.as[ComingCart].flatMap(tup => Logger[F].info("The message comes right here") >>
-          shoppingCart.add(tup.userId, tup.itemId, tup.quantity) >>
-            Logger[F].info(s"Added item: ${tup.itemId}") >>
-             Created()
+      // Adds an item to a user's cart
+      case ar @ POST -> Root / userId =>
+        ar.as[ComingCart].flatMap( tup =>
+          GenUUID[F].get[UserId](userId).flatMap( userId =>
+            shoppingCart.add(userId, tup.itemId, tup.quantity) >>
+              Logger[F].info(s"Added item: ${tup.itemId}") >>
+               Created()
+          )
         )
-
-      case ar @ DELETE -> Root / itemId =>
-        ar.as[RemoveFromCart].flatMap(remove =>
-          shoppingCart.removeItem(remove.userId, UUID.fromString(itemId)) >> NoContent()
-        )
-
-      
         
+      // Deletes an item from a user's cart
+      case ar @ PATCH -> Root / userId =>
+        ar.as[RemoveFromCart].flatMap( remove =>
+          GenUUID[F].get[UserId](userId).flatMap( userId =>
+            shoppingCart.removeItem(userId, remove.itemId ) >> NoContent()
+          )
+        )
     }
 
   val routes: HttpRoutes[F] = Router(prefixPath -> httpRoutes)

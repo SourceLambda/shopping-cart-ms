@@ -24,9 +24,9 @@ object CartTypes:
       Decoder.forProduct1("items")(Cart.apply)
       
       
-  case class ComingCart(userId: UserId, itemId: ItemId, quantity: Quantity)
+  case class ComingCart(itemId: ItemId, quantity: Quantity)
   
-  case class RemoveFromCart(userId: UserId)
+  case class RemoveFromCart(itemId: ItemId)
   
   case class CartItem(item: Item, quantity: Quantity):
     def subTotal: Money = item.price * quantity
