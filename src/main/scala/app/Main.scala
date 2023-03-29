@@ -29,7 +29,7 @@ object Main extends IOApp:
           AppResources.make[IO](cfg).use { resources =>
 
             val items         = Items.make(resources.postgres)
-            val shoppingCart  = ShoppingCart.make(resources.redis, items, 300.seconds)
+            val shoppingCart  = ShoppingCart.make(resources.redis, items, 2.hours)
             val api           = HttpApi.make(shoppingCart)
             val server        = MkHttpServer.make[IO].create(api.httpApp)
 

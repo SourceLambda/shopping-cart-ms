@@ -20,7 +20,7 @@ object ItemTypes:
   type Money = BigDecimal
   
   case class Item(
-   uuid: ItemId,
+   id: ItemId,
    name: ItemName,
    description: ItemDescription,
    price: Money,

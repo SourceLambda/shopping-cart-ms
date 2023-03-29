@@ -39,7 +39,6 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
       // Retrieves the current user's cart
       case GET -> Root / userId =>
         GenUUID[F].get[UserId](userId).flatMap( userId =>
-          Logger[F].info(s"The ID is: $userId") >>
           Ok(shoppingCart.get(userId))
         )
         
@@ -57,7 +56,9 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
       case ar @ PATCH -> Root / userId =>
         ar.as[RemoveFromCart].flatMap( remove =>
           GenUUID[F].get[UserId](userId).flatMap( userId =>
-            shoppingCart.removeItem(userId, remove.itemId ) >> NoContent()
+            shoppingCart.removeItem(userId, remove.itemId ) >>
+              Logger[F].info(s"Removed item: ${remove.itemId}") >>
+                NoContent()
           )
         )
     }
