@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package lib.typeclasses
 
 trait Mappable[T]:

@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package http
 
 import algebras.{Items, ShoppingCart}
@@ -9,8 +9,8 @@ import cats.effect.kernel.Concurrent
 import cats.syntax.semigroupk.*
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.CORS
-import dev.brave.http.routes.{CartRoutes, HealthRoutes}
-import dev.brave.lib.typeclasses.GenUUID
+import com.sourcelambda.http.routes.{CartRoutes, HealthRoutes}
+import com.sourcelambda.lib.typeclasses.GenUUID
 import dev.profunktor.redis4cats.RedisCommands
 import org.typelevel.log4cats.Logger
 

@@ -1,4 +1,4 @@
-ThisBuild / version := "0.0.1"
+ThisBuild / version := "0.0.2"
 
 ThisBuild / scalaVersion := "3.2.2"
 
@@ -6,21 +6,17 @@ lazy val root = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin)
   .settings(
     name             := "shopping-cart",
-    idePackagePrefix := Some("dev.brave"),
-    dockerRepository := Some("ghcr.io"),
-    dockerUsername   := Some("hombre-x"),
+    idePackagePrefix := Some("com.sourcelambda"),
+    dockerRepository := Some("hombrexgsp"),
+    dockerUsername   := Some("hombrexgsp"),
     dockerExposedPorts ++= Seq(80, 8000, 8080),
     dockerBaseImage  := "openjdk:19",
-    scalacOptions ++= Seq(
-      "-Ywarn-unused-import"
-    ),
     libraryDependencies ++= Seq(
       // Cats
       "org.typelevel" %% "cats-core"      % "2.9.0",
       "org.typelevel" %% "cats-effect"    % "3.4.8",
       "org.typelevel" %% "log4cats-core"  % "2.5.0",
       "org.typelevel" %% "log4cats-slf4j" % "2.5.0",
-      "org.typelevel" %% "squants"        % "1.8.3",
       "org.typelevel" %% "kittens"        % "3.0.0",
 
       // Fs2

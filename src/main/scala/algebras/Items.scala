@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package algebras
 
 import cats.syntax.all.*
@@ -45,7 +45,7 @@ object Items:
 
 private object ItemsSQL:
   
-  import dev.brave.codecs.SkunkCodecs.*
+  import com.sourcelambda.codecs.SkunkCodecs.*
 
   val decoder: Decoder[Item] =
     (itemId ~ itemName ~ itemDesc ~ money ~ brandId ~ brandName ~ categoryId ~ categoryName).map {

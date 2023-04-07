@@ -1,7 +1,7 @@
-package dev.brave
+package com.sourcelambda
 package domain
 
-import dev.brave.lib.domain.{IdNewType, NewType}
+import com.sourcelambda.lib.domain.{IdNewType, NewType}
 
 import java.util.UUID
 

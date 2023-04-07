@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package supplies
 
 import cats.effect.{Resource, Concurrent}

@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package utils
 
 import cats.effect.Sync

@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package supplies
 
 import cats.syntax.all.*
@@ -11,7 +11,7 @@ import dev.profunktor.redis4cats.effect.MkRedis
 
 import domain.SkunkTypes.Pool
 
-import dev.brave.domain.ConfigTypes.AppConfig
+import com.sourcelambda.domain.ConfigTypes.AppConfig
 import fs2.io.net.Network
 import natchez.Trace
 

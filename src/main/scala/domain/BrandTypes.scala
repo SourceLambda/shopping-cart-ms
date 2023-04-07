@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package domain
 
 import lib.domain.{IdNewType, NewType}

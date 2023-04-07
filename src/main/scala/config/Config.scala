@@ -1,4 +1,4 @@
-package dev.brave
+package com.sourcelambda
 package config
 
 import cats.effect.Async
