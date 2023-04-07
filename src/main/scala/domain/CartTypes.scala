@@ -24,7 +24,7 @@ object CartTypes:
       Decoder.forProduct1("items")(Cart.apply)
       
       
-  case class ComingCart(itemId: ItemId, quantity: Quantity)
+  case class CartItemSimple(itemId: ItemId, quantity: Quantity)
   
   case class RemoveFromCart(itemId: ItemId)
   

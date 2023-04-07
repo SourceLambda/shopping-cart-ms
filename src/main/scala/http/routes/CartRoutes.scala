@@ -29,7 +29,7 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
   
   private val prefixPath = "/cart"
   
-  private given EntityDecoder[F, ComingCart] = jsonOf[F, ComingCart]
+  private given EntityDecoder[F, CartItemSimple] = jsonOf[F, CartItemSimple]
   
   private def httpRoutes: HttpRoutes[F] =
 
@@ -43,13 +43,13 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
         
       // Adds an item to a user's cart
       case ar @ POST -> Root / userId =>
-        ar.as[ComingCart].flatMap( cartItem =>
+        ar.as[CartItemSimple].flatMap( cartItem =>
           GenUUID[F].get[UserId](userId).flatMap( userId =>
             shoppingCart.add(userId, cartItem.itemId, cartItem.quantity) >>
               Logger[F].info(s"Added item: ${cartItem.itemId}") >>
                Created()
           )
-        )
+        ).onError(e => Logger[F].error(e)("Error in routes:"))
         
       // Deletes an item from a user's cart
       case ar @ PATCH -> Root / userId =>
