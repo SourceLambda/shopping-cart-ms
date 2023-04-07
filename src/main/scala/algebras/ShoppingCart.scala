@@ -1,19 +1,22 @@
 package dev.brave
 package algebras
 
+import scala.annotation.unused
+
+import cats.MonadThrow
 import cats.syntax.all.*
+
 import skunk.*
 import skunk.syntax.all.*
+
 import dev.profunktor.redis4cats.RedisCommands
+
 import domain.UserTypes.*
 import domain.ItemTypes.*
 import domain.CartTypes.*
 import domain.SkunkTypes.Pool
+
 import lib.typeclasses.GenUUID
-
-import cats.MonadThrow
-
-
 
 trait ShoppingCart[F[_]]:
 
@@ -40,15 +43,15 @@ object ShoppingCart:
         _.toList
           .traverseFilter {
             case (k, v) =>
-              for {
+              for
                 id <- GenUUID[F].get[ItemId](k)
                 qt <- MonadThrow[F].catchNonFatal(v.toInt)
                 rs <- items.findById(id).map(_.map(_.cart(qt)))
-              } yield rs
+              yield rs
           }
-          .map { items =>
+          .map( items =>
             CartTotal(items, items.foldMap(_.subTotal))
-          }
+          )
       }
 
     def delete(userId: UserId): F[Unit] =
@@ -57,6 +60,7 @@ object ShoppingCart:
     def removeItem(userId: UserId, itemId: ItemId): F[Unit] =
       redis.hDel(userId.show, itemId.show).void
 
+    @unused
     def update(userId: UserId, cart: Cart): F[Unit] =
       redis.hGetAll(userId.show).flatMap {
         _.toList.traverse_ {
