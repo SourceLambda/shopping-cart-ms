@@ -11,6 +11,9 @@ lazy val root = (project in file("."))
     dockerUsername   := Some("hombre-x"),
     dockerExposedPorts ++= Seq(80, 8000, 8080),
     dockerBaseImage  := "openjdk:19",
+    scalacOptions ++= Seq(
+      "-Ywarn-unused-import"
+    ),
     libraryDependencies ++= Seq(
       // Cats
       "org.typelevel" %% "cats-core"      % "2.9.0",
@@ -48,6 +51,6 @@ lazy val root = (project in file("."))
       "io.circe" %% "circe-generic" % "0.14.5",
 
       // Logback
-      "ch.qos.logback" % "logback-classic" % "1.4.5"
+      "ch.qos.logback" % "logback-classic" % "1.4.6"
     )
   )

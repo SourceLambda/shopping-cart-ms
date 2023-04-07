@@ -17,7 +17,7 @@ object ItemTypes:
   type ItemId = UUID
   type ItemName = String
   type ItemDescription = String
-  type Money = BigDecimal
+  type Money = Float
   
   case class Item(
    id: ItemId,
