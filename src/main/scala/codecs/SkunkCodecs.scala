@@ -23,6 +23,6 @@ object SkunkCodecs:
 
   val userId: Codec[UserId] = uuid
 
-  val money: Codec[Money] = numeric
+  val money: Codec[Money] = float4
 
 end SkunkCodecs
