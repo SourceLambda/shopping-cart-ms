@@ -32,4 +32,4 @@ end HttpApi
 
 object HttpApi:
   def make[F[_] : Async : GenUUID : Logger](shoppingCart: ShoppingCart[F]): HttpApi[F] =
-    new HttpApi[F](shoppingCart){}
+    new HttpApi[F](shoppingCart) {}

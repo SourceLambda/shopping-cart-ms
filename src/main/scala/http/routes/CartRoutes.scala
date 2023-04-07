@@ -18,9 +18,8 @@ import io.circe.syntax.*
 import io.circe.generic.auto.*
 
 import java.util.UUID
-
 import algebras.ShoppingCart
-import domain.CartTypes.{Cart, CartTotal, ComingCart, RemoveFromCart}
+import domain.CartTypes.*
 import domain.UserTypes.UserId
 import instances.ItemInstances.given
 import lib.typeclasses.GenUUID
@@ -44,10 +43,10 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
         
       // Adds an item to a user's cart
       case ar @ POST -> Root / userId =>
-        ar.as[ComingCart].flatMap( tup =>
+        ar.as[ComingCart].flatMap( cartItem =>
           GenUUID[F].get[UserId](userId).flatMap( userId =>
-            shoppingCart.add(userId, tup.itemId, tup.quantity) >>
-              Logger[F].info(s"Added item: ${tup.itemId}") >>
+            shoppingCart.add(userId, cartItem.itemId, cartItem.quantity) >>
+              Logger[F].info(s"Added item: ${cartItem.itemId}") >>
                Created()
           )
         )
