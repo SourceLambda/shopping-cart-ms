@@ -4,22 +4,19 @@ package instances
 import cats.derived.*
 import cats.{Eq, Show}
 import cats.syntax.show.*
-
 import io.circe.generic.semiauto
 import io.circe.syntax.*
 import io.circe.{Codec, Encoder}
-
 import domain.ItemTypes.*
-import domain.CartTypes.{CartItem, CartTotal, Quantity}
-
+import domain.CartTypes.{CartItem, CartItemSimple, CartTotal, Quantity}
 import lib.typeclasses.Mappable
 import instances.{BrandInstances, CategoryInstances}
 
 object ItemInstances:
 
   given Codec[Item]      = semiauto.deriveCodec
-  given Codec[CartItem]  = semiauto.deriveCodec
   given Codec[CartTotal] = semiauto.deriveCodec
+  given Codec[CartItemSimple] = semiauto.deriveCodec
 
   given Show[Quantity] = Show.fromToString
   given Show[Item]     = Show.fromToString
