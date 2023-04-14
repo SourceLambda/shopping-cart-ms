@@ -21,7 +21,7 @@ import lib.typeclasses.GenUUID
 trait ShoppingCart[F[_]]:
 
   def add(userId: UserId, itemId: ItemId, quantity: Int): F[Unit]
-  def get(userId: UserId): F[List[CartItemSimple]]
+  def get(userId: UserId): F[CartTotal]
   def delete(userId: UserId): F[Unit]
   def removeItem(userId: UserId, itemId: ItemId): F[Unit]
 
@@ -30,7 +30,6 @@ end ShoppingCart
 object ShoppingCart:
   def make[F[_]: GenUUID : MonadThrow](
     redis: RedisCommands[F, String, String],
-    items: Items[F],
     exp: ShoppingCartExpiration
   ): ShoppingCart[F] = new ShoppingCart[F]:
     
@@ -38,7 +37,7 @@ object ShoppingCart:
       redis.hSet(userId.show, itemId.show, quantity.show) *>
         redis.expire(userId.show, exp).void
 
-    def get(userId: UserId): F[List[CartItemSimple]] =
+    def get(userId: UserId): F[CartTotal] =
       redis.hGetAll(userId.show).flatMap {
         _.toList
           .traverse {
@@ -48,6 +47,7 @@ object ShoppingCart:
                 qt <- MonadThrow[F].catchNonFatal(v.toInt)
               yield CartItemSimple(id, qt)
           }
+          .map(CartTotal.apply)
       }
 
     def delete(userId: UserId): F[Unit] =
