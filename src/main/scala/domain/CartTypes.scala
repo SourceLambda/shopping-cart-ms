@@ -31,7 +31,7 @@ object CartTypes:
   case class CartItem(item: Item, quantity: Quantity):
     def subTotal: Money = item.price * quantity
     
-  case class CartTotal(items: List[CartItem], total: Money)
+  case class CartTotal(items: List[CartItemSimple])
   case class CartNotFound(userId: UserId) extends NoStackTrace
  
 end CartTypes
