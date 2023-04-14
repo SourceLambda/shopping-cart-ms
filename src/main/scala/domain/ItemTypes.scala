@@ -5,7 +5,6 @@ import java.util.UUID
 import scala.deriving.*
 import cats.{Eq, Show}
 import cats.instances.string.*
-import squants.Money
 import domain.BrandTypes.*
 import domain.CategoryTypes.*
 import domain.CartTypes.*
