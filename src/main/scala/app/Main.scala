@@ -19,7 +19,7 @@ import http.HttpApi
 
 object Main extends IOApp:
   
-  given logger: Logger[IO] = Slf4jLogger.getLoggerFromName("Main")
+  given logger: Logger[IO] = Slf4jLogger.getLoggerFromName("App")
     
   override def run(args: List[String]): IO[ExitCode] =
     Config
@@ -28,8 +28,8 @@ object Main extends IOApp:
         logger.info(s"Loading configurations: $cfg") >>
           AppResources.make[IO](cfg).use { resources =>
 
-            val items         = Items.make(resources.postgres)
-            val shoppingCart  = ShoppingCart.make(resources.redis, items, 2.hours)
+//            val items         = Items.make(resources.postgres)
+            val shoppingCart  = ShoppingCart.make(resources.redis, 2.hours)
             val api           = HttpApi.make(shoppingCart)
             val server        = MkHttpServer.make[IO].create(api.httpApp)
 

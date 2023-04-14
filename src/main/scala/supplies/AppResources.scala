@@ -17,7 +17,7 @@ import natchez.Trace
 
 
 case class AppResources[F[_]] (
-                                postgres: Pool[F],
+//                                postgres: Pool[F],
                                 redis: RedisCommands[F, String, String]
                               )
 
@@ -25,7 +25,7 @@ object AppResources:
   def make[F[_] : Temporal : MkRedis : Trace : Console : Network : Logger]
     (config: AppConfig): Resource[F, AppResources[F]] =
       (
-        MkPostgresSession.make[F](config.postgreSQL).create,
+//        MkPostgresSession.make[F](config.postgreSQL).create,
         MkRedisCommands.make[F](config.redisConfig).create
-      ).mapN(AppResources.apply)
+      ).map(AppResources.apply)
   
