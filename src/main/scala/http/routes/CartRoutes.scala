@@ -1,7 +1,6 @@
 package com.sourcelambda
 package http.routes
 
-import cats.Monad
 import cats.syntax.all.*
 
 import org.typelevel.log4cats.Logger
@@ -17,6 +16,7 @@ import org.http4s.circe.CirceEntityDecoder.circeEntityDecoder
 import io.circe.syntax.*
 import io.circe.generic.auto.*
 
+
 import java.util.UUID
 import algebras.ShoppingCart
 import domain.CartTypes.*
@@ -25,6 +25,7 @@ import instances.ItemInstances.given
 import lib.typeclasses.GenUUID
 
 import cats.effect.Concurrent
+
 class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCart[F]) extends Http4sDsl[F]:
   
   private val prefixPath = "/cart"
@@ -39,7 +40,7 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
       case GET -> Root / userId =>
         GenUUID[F].get[UserId](userId).flatMap( userId =>
           Ok(shoppingCart.get(userId))
-        )
+        ).onError(e => Logger[F].error(e)("Error in routes:"))
         
       // Adds an item to a user's cart
       case ar @ POST -> Root / userId =>
@@ -47,7 +48,7 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
           GenUUID[F].get[UserId](userId).flatMap( userId =>
             shoppingCart.add(userId, cartItem.itemId, cartItem.quantity) >>
               Logger[F].info(s"Added item: ${cartItem.itemId}") >>
-               Created()
+               Created(shoppingCart.get(userId))
           )
         ).onError(e => Logger[F].error(e)("Error in routes:"))
         
@@ -59,6 +60,12 @@ class CartRoutes[F[_] : GenUUID : Concurrent : Logger](shoppingCart: ShoppingCar
               Logger[F].info(s"Removed item: ${remove.itemId}") >>
                 NoContent()
           )
+        ).onError(e => Logger[F].error(e)("Error in routes:"))
+        
+      // Delete the cart from a user
+      case DELETE -> Root / userId =>
+        GenUUID[F].get[UserId](userId).flatMap( userId =>
+          shoppingCart.delete(userId) >> ResetContent()
         )
     }
 
