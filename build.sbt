@@ -5,10 +5,9 @@ ThisBuild / scalaVersion := "3.2.2"
 lazy val root = (project in file("."))
   .enablePlugins(JavaServerAppPackaging, DockerPlugin)
   .settings(
-    name             := "shopping-cart",
+    name             := "shopping-cart-ms",
     idePackagePrefix := Some("com.sourcelambda"),
     dockerRepository := Some("hombrexgsp"),
-    dockerUsername   := Some("hombrexgsp"),
     dockerExposedPorts ++= Seq(80, 8000, 8080),
     dockerBaseImage  := "openjdk:19",
     libraryDependencies ++= Seq(
