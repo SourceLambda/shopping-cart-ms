@@ -12,14 +12,17 @@ import domain.ConfigTypes.*
 
 
 object Config:
+  
+  
 
   def load[F[_] : Async]: F[AppConfig] =
     (
+      env("SL_SC_REDIS_URI").default("host.docker.internal").as[String],
       env("SL_SC_DATABASE_URI").default("localhost").as[String],
       env("SL_SC_DATABASE_PORT").default("5432").as[Int],
       env("SL_SC_DATABASE_USERNAME").default("postgres").as[String],
       env("SL_SC_DATABASE_PASSWORD").default("postgres").as[String].secret,
-    ).parMapN( (dbUri, dbPort, dbUser, dbPass) =>
+    ).parMapN( (redisUri, dbUri, dbPort, dbUser, dbPass) =>
       
       AppConfig(
         
@@ -34,7 +37,7 @@ object Config:
         
         // Redis
         RedisConfig(
-          uri = "redis://localhost"
+          uri = s"redis://$redisUri"
         )
       )
     ).load[F]
