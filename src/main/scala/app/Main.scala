@@ -14,7 +14,7 @@ import natchez.Trace.Implicits.noop
 import scala.concurrent.duration.*
 import config.Config
 import supplies.*
-import algebras.{Items, ShoppingCart}
+import algebras.ShoppingCart
 import http.HttpApi
 
 object Main extends IOApp:
@@ -32,11 +32,17 @@ object Main extends IOApp:
             val shoppingCart  = ShoppingCart.make(resources.redis, 2.hours)
             val api           = HttpApi.make(shoppingCart)
             val server        = MkHttpServer.make[IO].create(api.httpApp)
-
-            server.useForever
+              .evalTap( server =>
+                IO(server).onError( e => logger.error(e)("Error ocurred creating server: \n"))
+              )
+              
+              
+            
+            
+            server
+              .useForever
               .onCancel(logger.info("Closing server..."))
               .as(ExitCode.Success)
-
           }
       )
 

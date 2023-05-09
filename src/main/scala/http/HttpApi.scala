@@ -1,7 +1,7 @@
 package com.sourcelambda
 package http
 
-import algebras.{Items, ShoppingCart}
+import algebras.ShoppingCart
 
 import cats.Monad
 import cats.effect.Async

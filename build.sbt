@@ -28,9 +28,6 @@ lazy val root = (project in file("."))
       "org.http4s" %% "http4s-ember-server" % "0.23.18",
       "org.http4s" %% "http4s-ember-client" % "0.23.18",
 
-      // Skunk
-      "org.tpolecat" %% "skunk-core" % "0.5.1",
-
       // Redis
       "dev.profunktor" %% "redis4cats-effects"  % "1.4.0",
       "dev.profunktor" %% "redis4cats-log4cats" % "1.4.0",

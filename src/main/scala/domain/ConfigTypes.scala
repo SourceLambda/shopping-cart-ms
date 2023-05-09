@@ -6,16 +6,8 @@ import domain.RedisTypes.RedisUri
 
 object ConfigTypes:
   
-  case class PostgresConfig(
-     host: String,
-     port: Int,
-     user: String,
-     password: Secret[String],
-     max: Int
-  )
-  
   case class RedisConfig(uri: RedisUri)
   
-  case class AppConfig(postgreSQL: PostgresConfig, redisConfig: RedisConfig)
+  case class AppConfig(redisConfig: RedisConfig)
  
 end ConfigTypes
