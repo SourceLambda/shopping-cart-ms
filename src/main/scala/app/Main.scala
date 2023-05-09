@@ -10,7 +10,6 @@ import com.comcast.ip4s.*
 import org.http4s.HttpApp
 import org.http4s.implicits.*
 import org.http4s.ember.server.EmberServerBuilder
-import natchez.Trace.Implicits.noop
 import scala.concurrent.duration.*
 import config.Config
 import supplies.*

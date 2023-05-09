@@ -11,13 +11,11 @@ import dev.profunktor.redis4cats.effect.MkRedis
 
 import com.sourcelambda.domain.ConfigTypes.AppConfig
 import fs2.io.net.Network
-import natchez.Trace
-
 
 case class AppResources[F[_]] (redis: RedisCommands[F, String, String])
 
 object AppResources:
-  def make[F[_] : Temporal : MkRedis : Trace : Console : Network : Logger]
+  def make[F[_] : Temporal : MkRedis : Console : Network : Logger]
     (config: AppConfig): Resource[F, AppResources[F]] =
       (
         MkRedisCommands.make[F](config.redisConfig).create

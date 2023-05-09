@@ -4,8 +4,6 @@ package algebras
 import scala.annotation.unused
 import cats.{Applicative, MonadThrow}
 import cats.syntax.all.*
-import skunk.*
-import skunk.syntax.all.*
 import dev.profunktor.redis4cats.RedisCommands
 import domain.UserTypes.*
 import domain.ItemTypes.*
