@@ -2,20 +2,14 @@ package com.sourcelambda
 package algebras
 
 import scala.annotation.unused
-
-import cats.MonadThrow
+import cats.{Applicative, MonadThrow}
 import cats.syntax.all.*
-
 import skunk.*
 import skunk.syntax.all.*
-
 import dev.profunktor.redis4cats.RedisCommands
-
 import domain.UserTypes.*
 import domain.ItemTypes.*
 import domain.CartTypes.*
-import domain.SkunkTypes.Pool
-
 import lib.typeclasses.GenUUID
 
 trait ShoppingCart[F[_]]:
@@ -28,7 +22,7 @@ trait ShoppingCart[F[_]]:
 end ShoppingCart
 
 object ShoppingCart:
-  def make[F[_]: GenUUID : MonadThrow](
+  def make[F[_] : MonadThrow](
     redis: RedisCommands[F, String, String],
     exp: ShoppingCartExpiration
   ): ShoppingCart[F] = new ShoppingCart[F]:
@@ -43,7 +37,7 @@ object ShoppingCart:
           .traverse {
             case (k, v) =>
               for
-                id <- GenUUID[F].get[ItemId](k)
+                id <- Applicative[F].pure(k)
                 qt <- MonadThrow[F].catchNonFatal(v.toInt)
               yield CartItemSimple(id, qt)
           }
@@ -61,15 +55,14 @@ object ShoppingCart:
       redis.hGetAll(userId.show).flatMap {
         _.toList.traverse_ {
           case (k, _) =>
-            GenUUID[F].get[ItemId](k).flatMap { id =>
+            Applicative[F].pure(k).flatMap { id =>
               cart.items.get(id).traverse_ { q =>
                 redis.hSet(userId.show, k, q.show)
               }
             }
         } *> redis.expire(userId.show, exp).void
       }
-
-
+    
   end make
   
 

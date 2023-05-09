@@ -13,7 +13,7 @@ import scala.util.control.NoStackTrace
 
 object ItemTypes:
   
-  type ItemId = UUID
+  type ItemId = String
   type ItemName = String
   type ItemDescription = String
   type Money = Float
