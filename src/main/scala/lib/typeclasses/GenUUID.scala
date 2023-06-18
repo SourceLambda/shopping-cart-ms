@@ -6,9 +6,6 @@ import java.util.UUID
 import cats.effect.Sync
 import cats.syntax.functor.*
 
-import lib.typeclasses.IsUUID
-
-
 trait GenUUID[F[_]]:
   def make[A : IsUUID]: F[A]
   def get[A : IsUUID](value: String): F[A]

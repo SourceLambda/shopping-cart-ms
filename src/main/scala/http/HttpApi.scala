@@ -3,15 +3,12 @@ package http
 
 import algebras.ShoppingCart
 
-import cats.Monad
 import cats.effect.Async
-import cats.effect.kernel.Concurrent
 import cats.syntax.semigroupk.*
 import org.http4s.{HttpApp, HttpRoutes}
 import org.http4s.server.middleware.CORS
 import com.sourcelambda.http.routes.{CartRoutes, HealthRoutes}
 import com.sourcelambda.lib.typeclasses.GenUUID
-import dev.profunktor.redis4cats.RedisCommands
 import org.typelevel.log4cats.Logger
 
 abstract class HttpApi[F[_] : Async : GenUUID : Logger](private val shoppingCart: ShoppingCart[F]):

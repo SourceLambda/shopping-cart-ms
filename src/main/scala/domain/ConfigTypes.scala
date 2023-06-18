@@ -1,7 +1,6 @@
 package com.sourcelambda
 package domain
 
-import ciris.Secret 
 import domain.RedisTypes.RedisUri
 
 object ConfigTypes:

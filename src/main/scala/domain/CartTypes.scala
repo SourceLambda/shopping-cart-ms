@@ -3,11 +3,10 @@ package domain
 
 import io.circe.{Encoder, Decoder}
 import scala.util.control.NoStackTrace
-import cats.instances.map.*
 import domain.ItemTypes.*
 import domain.UserTypes.*
 
-import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.concurrent.duration.FiniteDuration
 
 object CartTypes:
   type Quantity = Int

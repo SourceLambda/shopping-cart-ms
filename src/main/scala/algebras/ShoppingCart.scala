@@ -8,7 +8,6 @@ import dev.profunktor.redis4cats.RedisCommands
 import domain.UserTypes.*
 import domain.ItemTypes.*
 import domain.CartTypes.*
-import lib.typeclasses.GenUUID
 
 trait ShoppingCart[F[_]]:
 
@@ -30,17 +29,17 @@ object ShoppingCart:
         redis.expire(userId.show, exp).void
 
     def get(userId: UserId): F[CartTotal] =
-      redis.hGetAll(userId.show).flatMap {
+      redis.hGetAll(userId.show).flatMap:
         _.toList
-          .traverse {
+          .traverse:
             case (k, v) =>
               for
                 id <- Applicative[F].pure(k)
                 qt <- MonadThrow[F].catchNonFatal(v.toInt)
               yield CartItemSimple(id, qt)
-          }
+          
           .map(CartTotal.apply)
-      }
+      
 
     def delete(userId: UserId): F[Unit] =
       redis.del(userId.show).void
@@ -50,16 +49,16 @@ object ShoppingCart:
 
     @unused
     def update(userId: UserId, cart: Cart): F[Unit] =
-      redis.hGetAll(userId.show).flatMap {
+      redis.hGetAll(userId.show).flatMap:
         _.toList.traverse_ {
           case (k, _) =>
-            Applicative[F].pure(k).flatMap { id =>
-              cart.items.get(id).traverse_ { q =>
+            Applicative[F].pure(k).flatMap: id =>
+              cart.items.get(id).traverse_ : q =>
                 redis.hSet(userId.show, k, q.show)
-              }
-            }
+              
+            
         } *> redis.expire(userId.show, exp).void
-      }
+      
     
   end make
   

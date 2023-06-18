@@ -5,7 +5,7 @@ import cats.syntax.all.*
 
 import org.typelevel.log4cats.Logger
 
-import org.http4s.{EntityEncoder, HttpRoutes}
+import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
 import org.http4s.server.Router
 import org.http4s.circe.*
@@ -13,11 +13,8 @@ import org.http4s.EntityDecoder
 import org.http4s.circe.CirceEntityEncoder.circeEntityEncoder
 import org.http4s.circe.CirceEntityDecoder.circeEntityDecoder
 
-import io.circe.syntax.*
 import io.circe.generic.auto.*
 
-
-import java.util.UUID
 import algebras.ShoppingCart
 import domain.CartTypes.*
 import domain.UserTypes.UserId

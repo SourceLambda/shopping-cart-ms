@@ -1,16 +1,13 @@
 package com.sourcelambda
 package instances
 
-import cats.derived.*
-import cats.{Eq, Show}
+import cats.Show
 import cats.syntax.show.*
 import io.circe.generic.semiauto
-import io.circe.syntax.*
 import io.circe.{Codec, Encoder}
 import domain.ItemTypes.*
-import domain.CartTypes.{CartItem, CartItemSimple, CartTotal, Quantity}
+import domain.CartTypes.{CartItemSimple, CartTotal, Quantity}
 import lib.typeclasses.Mappable
-import instances.{BrandInstances, CategoryInstances}
 
 object ItemInstances:
 

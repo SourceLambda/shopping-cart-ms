@@ -1,15 +1,10 @@
 package com.sourcelambda
 package app
 
-import cats.syntax.all.*
-import cats.effect.{ExitCode, IO, IOApp, Resource}
+import cats.effect.{ExitCode, IO, IOApp}
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 import dev.profunktor.redis4cats.log4cats.*
-import com.comcast.ip4s.*
-import org.http4s.HttpApp
-import org.http4s.implicits.*
-import org.http4s.ember.server.EmberServerBuilder
 import scala.concurrent.duration.*
 import config.Config
 import supplies.*
@@ -25,7 +20,7 @@ object Main extends IOApp:
       .load[IO]
       .flatMap(cfg =>
         logger.info(s"Loading configurations: $cfg") >>
-          AppResources.make[IO](cfg).use { resources =>
+          AppResources.make[IO](cfg).use: resources =>
 
 //            val items         = Items.make(resources.postgres)
             val shoppingCart  = ShoppingCart.make(resources.redis, 2.hours)
@@ -34,15 +29,12 @@ object Main extends IOApp:
               .evalTap( server =>
                 IO(server).onError( e => logger.error(e)("Error ocurred creating server: \n"))
               )
-              
-              
-            
             
             server
               .useForever
               .onCancel(logger.info("Closing server..."))
               .as(ExitCode.Success)
-          }
+          
       )
 
   end run

@@ -1,8 +1,6 @@
 package com.sourcelambda
 package domain
 
-import com.sourcelambda.lib.domain.{IdNewType, NewType}
-
 import java.util.UUID
 
 object CategoryTypes:

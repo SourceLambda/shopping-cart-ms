@@ -1,8 +1,6 @@
 package com.sourcelambda
 package domain
 
-import lib.domain.{IdNewType, NewType}
-
 import java.util.UUID
 import scala.util.control.NoStackTrace
 
